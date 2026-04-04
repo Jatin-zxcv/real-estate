@@ -1,0 +1,263 @@
+.properties .properties-header {
+  position: relative;
+  width: 100vw;
+  height: 60svh;
+  overflow: hidden;
+  color: var(--base-100);
+  display: flex;
+  align-items: flex-end;
+}
+
+.properties .properties-header .container {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-end;
+}
+
+.properties .properties-header .prop-col:nth-child(1) {
+  flex: 2;
+}
+
+.properties .properties-header .prop-col:nth-child(2) {
+  flex: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.properties .properties-tagline {
+  color: var(--base-300);
+  font-size: 1.1rem;
+}
+
+.properties .prop-filters {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.properties .prop-filters .filter {
+  color: var(--base-400);
+  padding: 0.5rem 0;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.properties .prop-filters .filter:hover {
+  color: var(--base-200);
+}
+
+.properties .prop-filters .filter.active {
+  color: var(--base-100);
+}
+
+.properties .prop-filters .filter-icon {
+  margin-right: 0.25rem;
+}
+
+.properties .properties-list {
+  padding-bottom: 4rem;
+}
+
+.properties .property-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  color: var(--base-100);
+  margin-bottom: 4rem;
+  transition: transform 0.3s ease;
+}
+
+.properties .property-card:hover {
+  transform: translateY(-4px);
+}
+
+.properties .property-card .property-img {
+  position: relative;
+  aspect-ratio: 16/6;
+  border-radius: 2rem;
+  overflow: hidden;
+}
+
+.properties .property-card .property-img img {
+  opacity: 0.85;
+  transition: opacity 0.3s ease, transform 0.5s ease;
+}
+
+.properties .property-card:hover .property-img img {
+  opacity: 1;
+  transform: scale(1.02);
+}
+
+.properties .property-category-badge {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  background-color: rgba(20, 19, 19, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-size: 0.85rem;
+  font-family: "DM Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--base-100);
+}
+
+.properties .property-status-badge {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background-color: rgba(242, 237, 230, 0.9);
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-size: 0.85rem;
+  font-family: "DM Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--base-500);
+}
+
+.properties .property-card .property-info {
+  display: flex;
+  gap: 2rem;
+}
+
+.properties .property-card .property-info h3 {
+  font-size: 1.75rem;
+  letter-spacing: -0.05rem;
+}
+
+.properties .property-card .property-info .prop-info-col:nth-child(1) {
+  flex: 2;
+}
+
+.properties .property-card .property-info .prop-info-col:nth-child(2) {
+  flex: 5;
+  display: flex;
+  gap: 2rem;
+}
+
+.properties .prop-info-sub-col:nth-child(1) {
+  flex: 4;
+}
+
+.properties .prop-info-sub-col:nth-child(2) {
+  flex: 3;
+}
+
+.properties .prop-name {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.properties .prop-name p.lg {
+  color: var(--base-300);
+}
+
+.properties .prop-price h3 {
+  color: var(--base-100);
+  font-weight: 600;
+}
+
+.properties .prop-specs {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.properties .spec {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--base-300);
+}
+
+.properties .spec-value {
+  font-family: "DM Mono", monospace;
+  font-size: 0.9rem;
+}
+
+.properties .no-properties {
+  text-align: center;
+  padding: 6rem 2rem;
+  color: var(--base-300);
+}
+
+.properties .no-properties h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--base-200);
+}
+
+@media (max-width: 1000px) {
+  .properties .properties-header .container {
+    align-items: flex-start;
+    padding: 2rem;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .properties .properties-header .prop-col:nth-child(2) {
+    flex: 1;
+  }
+
+  .properties .prop-filters {
+    width: 100%;
+    gap: 0.75rem;
+  }
+
+  .properties .prop-filters .filter {
+    padding: 0;
+  }
+
+  .properties .property-card .property-img {
+    aspect-ratio: 4/3;
+  }
+
+  .properties .property-card .property-info {
+    flex-direction: column-reverse;
+    gap: 1rem;
+  }
+
+  .properties .property-card .property-info h3 {
+    font-size: 1.25rem;
+  }
+
+  .properties .prop-name p {
+    font-size: 1rem;
+  }
+
+  .properties .prop-name {
+    gap: 0.5rem;
+  }
+
+  .properties .prop-specs {
+    justify-content: flex-start;
+  }
+
+  .properties .property-card {
+    margin-bottom: 2rem;
+  }
+
+  .properties .prop-info-sub-col:nth-child(1) {
+    flex: 1;
+  }
+
+  .properties .prop-info-sub-col:nth-child(2) {
+    flex: 1;
+  }
+
+  .properties .prop-filters .filter p.lg {
+    font-size: 0.9rem;
+  }
+  
+  .properties .property-category-badge,
+  .properties .property-status-badge {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+  }
+}

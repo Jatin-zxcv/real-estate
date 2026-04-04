@@ -1,0 +1,415 @@
+.property-hero {
+  position: relative;
+  width: 100vw;
+  min-height: 100svh;
+  height: 100%;
+  overflow: hidden;
+}
+
+.property-hero .property-hero-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.property-hero .property-hero-img img {
+  transition: opacity 0.5s ease;
+}
+
+.property-hero .property-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(20, 19, 19, 0.3) 0%,
+    rgba(20, 19, 19, 0.7) 100%
+  );
+}
+
+.property-content {
+  padding: 4rem 0 8rem 0;
+}
+
+.property-hero-header h1 {
+  position: relative;
+}
+
+.property-hero .container {
+  position: relative;
+  padding-top: 35svh;
+  color: var(--base-100);
+}
+
+.property-hero .container .property-content {
+  display: flex;
+  position: relative;
+  gap: 2rem;
+}
+
+.property-col:nth-child(1) {
+  flex: 2;
+}
+
+.property-col:nth-child(2) {
+  flex: 3;
+}
+
+.property-hero .property-content .property-col:nth-child(2) {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.property-hero .property-content .property-col:nth-child(2) h3 {
+  width: 85%;
+  line-height: 1.6;
+}
+
+.property-price-badge h2 {
+  font-size: 2.5rem;
+  color: var(--base-100);
+  font-weight: 700;
+}
+
+.property-meta .property-hero-row {
+  display: flex;
+  gap: 2rem;
+}
+
+.property-meta .property-hero-row .property-hero-sub-col {
+  flex: 1;
+}
+
+.property-meta .property-hero-row .property-hero-sub-col p:nth-child(1) {
+  margin-bottom: 1rem;
+  color: var(--base-350);
+  font-family: "DM Mono", monospace;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+}
+
+/* Image Gallery */
+.property-gallery {
+  padding: 2rem 0 6rem;
+  background-color: var(--base-500);
+}
+
+.gallery-thumbnails {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding: 1rem 0;
+}
+
+.gallery-thumb {
+  flex-shrink: 0;
+  width: 150px;
+  height: 100px;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.gallery-thumb:hover {
+  opacity: 0.8;
+  transform: scale(1.02);
+}
+
+.gallery-thumb.active {
+  opacity: 1;
+  border-color: var(--base-100);
+}
+
+.gallery-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Amenities Section */
+.property-amenities {
+  position: relative;
+  width: 100vw;
+  padding: 6rem 0;
+  color: var(--base-100);
+}
+
+.property-amenities .container {
+  display: flex;
+  gap: 2rem;
+}
+
+.property-amenities .property-col:nth-child(1) p {
+  font-family: "DM Mono", monospace;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  color: var(--base-350);
+}
+
+.amenities-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.amenity-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  background-color: rgba(242, 237, 230, 0.05);
+  border-radius: 0.75rem;
+  transition: background-color 0.3s ease;
+}
+
+.amenity-item:hover {
+  background-color: rgba(242, 237, 230, 0.08);
+}
+
+.amenity-check {
+  color: var(--base-250);
+  font-size: 1rem;
+}
+
+/* Inquiry Form Section */
+.property-inquiry {
+  position: relative;
+  width: 100vw;
+  padding: 6rem 0;
+  background-color: var(--base-450);
+}
+
+.property-inquiry .container {
+  display: flex;
+  gap: 2rem;
+}
+
+.property-inquiry .property-col:nth-child(1) p {
+  font-family: "DM Mono", monospace;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  color: var(--base-350);
+}
+
+.inquiry-form-wrapper {
+  max-width: 600px;
+}
+
+.inquiry-form-wrapper h3 {
+  color: var(--base-100);
+  margin-bottom: 1rem;
+}
+
+.inquiry-form-wrapper .form-subtitle {
+  color: var(--base-300);
+  margin-bottom: 2rem;
+}
+
+.inquiry-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  color: var(--base-300);
+  font-family: "DM Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 1rem;
+  background-color: rgba(242, 237, 230, 0.05);
+  border: 1px solid var(--base-400);
+  border-radius: 0.5rem;
+  color: var(--base-100);
+  font-size: 1rem;
+  font-family: "Manrope", sans-serif;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--base-250);
+  background-color: rgba(242, 237, 230, 0.08);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: var(--base-400);
+}
+
+.submit-btn {
+  padding: 1.25rem 2rem;
+  background-color: var(--base-100);
+  color: var(--base-500);
+  border: none;
+  border-radius: 4rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  align-self: flex-start;
+}
+
+.submit-btn:hover {
+  transform: scale(1.02);
+  background-color: var(--base-200);
+}
+
+.form-success {
+  padding: 2rem;
+  background-color: rgba(242, 237, 230, 0.1);
+  border-radius: 1rem;
+  text-align: center;
+}
+
+.form-success h4 {
+  color: var(--base-100);
+  margin-bottom: 0.5rem;
+}
+
+.form-success p {
+  color: var(--base-300);
+}
+
+/* Quick Contact Section */
+.property-quick-contact {
+  padding: 4rem 0 6rem;
+  background-color: var(--base-500);
+}
+
+.quick-contact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.quick-contact-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2.5rem 2rem;
+  background-color: rgba(242, 237, 230, 0.05);
+  border-radius: 1rem;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.quick-contact-card:hover {
+  background-color: rgba(242, 237, 230, 0.1);
+  transform: translateY(-4px);
+}
+
+.quick-contact-icon {
+  font-size: 2rem;
+}
+
+.quick-contact-label {
+  font-family: "DM Mono", monospace;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  color: var(--base-350);
+}
+
+.quick-contact-value {
+  color: var(--base-100);
+  font-weight: 500;
+}
+
+/* Not Found State */
+.property-not-found {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--base-100);
+}
+
+.property-not-found h2 {
+  margin-bottom: 1rem;
+}
+
+.property-not-found p {
+  color: var(--base-300);
+  margin-bottom: 2rem;
+}
+
+/* Responsive */
+@media (max-width: 1000px) {
+  .property-hero .container .property-content {
+    flex-direction: column;
+    gap: 4rem;
+  }
+
+  .property-hero .property-content .property-col:nth-child(2) h3 {
+    width: 100%;
+  }
+
+  .property-amenities .container,
+  .property-inquiry .container {
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .amenities-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+
+  .quick-contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gallery-thumb {
+    width: 120px;
+    height: 80px;
+  }
+
+  .property-price-badge h2 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .amenities-grid {
+    grid-template-columns: 1fr;
+  }
+}
