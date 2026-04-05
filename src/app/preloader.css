@@ -30,21 +30,19 @@
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
-  gap: 0.5rem;
+  gap: 0;
 }
 
 .loader #word-1 {
   position: relative;
-  left: 0rem;
-  padding-right: 0.25rem;
   color: var(--base-100);
+  padding-left: 4rem;
 }
 
 .loader #word-2 {
   position: relative;
-  left: 0.5rem;
-  padding-right: 0.25rem;
   color: var(--base-100);
+  padding-left: 4rem;
 }
 
 .loader .word h1 {
@@ -64,66 +62,24 @@
   background-color: rgba(242, 237, 230, 0.125);
 }
 
-.loader .spinner-container {
-  position: absolute;
-  bottom: 10%;
-  left: 50%;
-  transform: translateX(-50%);
-}
 
-.loader .spinner {
-  width: 50px;
-  height: 50px;
-  border: 1.4px solid var(--base-350);
-  border-top-color: rgba(242, 237, 230, 0.05);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.loader .counter {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 2;
-}
-
-.loader .count {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-}
-
-.loader .digit {
-  flex: 1;
-  padding-top: 1rem;
-}
-
-.loader .count .digit h1 {
-  font-size: 15rem;
-  font-weight: 400;
-  color: var(--base-400);
-}
-
-.loader .line,
-.loader .word,
-.loader .count .digit {
+.loader .line {
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
 }
 
+.loader .word {
+  overflow: hidden;
+}
+
 .loader .line h1,
-.loader .line p,
-.loader .count .digit h1 {
+.loader .line p {
   position: relative;
   transform: translateY(120%);
+  will-change: transform;
+}
+
+.loader .word h1 {
   will-change: transform;
 }
 
@@ -145,11 +101,7 @@
 }
 
 @media (max-width: 1000px) {
-  .loader .counter .count .digit h1 {
-    font-size: 7rem;
-  }
-
-  .loader .counter .count .digit {
-    padding-top: 0.25rem;
+  .loader .word h1 {
+    font-size: 1.5rem;
   }
 }

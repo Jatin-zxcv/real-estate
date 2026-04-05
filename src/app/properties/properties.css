@@ -60,12 +60,17 @@
   padding-bottom: 4rem;
 }
 
+.properties .properties-list .container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
 .properties .property-card {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
   color: var(--base-100);
-  margin-bottom: 4rem;
   transition: transform 0.3s ease;
 }
 
@@ -75,8 +80,8 @@
 
 .properties .property-card .property-img {
   position: relative;
-  aspect-ratio: 16/6;
-  border-radius: 2rem;
+  aspect-ratio: 4/3;
+  border-radius: 1rem;
   overflow: hidden;
 }
 
@@ -121,30 +126,32 @@
 
 .properties .property-card .property-info {
   display: flex;
-  gap: 2rem;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .properties .property-card .property-info h3 {
-  font-size: 1.75rem;
-  letter-spacing: -0.05rem;
+  font-size: 1.25rem;
+  letter-spacing: -0.03rem;
 }
 
 .properties .property-card .property-info .prop-info-col:nth-child(1) {
-  flex: 2;
+  order: 2;
 }
 
 .properties .property-card .property-info .prop-info-col:nth-child(2) {
-  flex: 5;
+  order: 1;
   display: flex;
-  gap: 2rem;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .properties .prop-info-sub-col:nth-child(1) {
-  flex: 4;
+  flex: 1;
 }
 
 .properties .prop-info-sub-col:nth-child(2) {
-  flex: 3;
+  flex: 1;
 }
 
 .properties .prop-name {
@@ -164,9 +171,9 @@
 
 .properties .prop-specs {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .properties .spec {
@@ -182,6 +189,7 @@
 }
 
 .properties .no-properties {
+  grid-column: 1 / -1;
   text-align: center;
   padding: 6rem 2rem;
   color: var(--base-300);
@@ -191,6 +199,12 @@
   font-size: 1.5rem;
   margin-bottom: 1rem;
   color: var(--base-200);
+}
+
+@media (max-width: 1200px) {
+  .properties .properties-list .container {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 1000px) {
@@ -214,17 +228,21 @@
     padding: 0;
   }
 
+  .properties .properties-list .container {
+    grid-template-columns: 1fr;
+  }
+
   .properties .property-card .property-img {
     aspect-ratio: 4/3;
   }
 
   .properties .property-card .property-info {
-    flex-direction: column-reverse;
-    gap: 1rem;
+    flex-direction: column;
+    gap: 0.75rem;
   }
 
   .properties .property-card .property-info h3 {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
   }
 
   .properties .prop-name p {
@@ -237,18 +255,6 @@
 
   .properties .prop-specs {
     justify-content: flex-start;
-  }
-
-  .properties .property-card {
-    margin-bottom: 2rem;
-  }
-
-  .properties .prop-info-sub-col:nth-child(1) {
-    flex: 1;
-  }
-
-  .properties .prop-info-sub-col:nth-child(2) {
-    flex: 1;
   }
 
   .properties .prop-filters .filter p.lg {

@@ -150,9 +150,6 @@ const Footer = () => {
       </div>
       <div className="footer-outro">
         <div className="container">
-          <div className="footer-header">
-            <h2 className="footer-logo-text">Sharma Real Estates</h2>
-          </div>
           <div className="footer-copyright">
             <p>
               Hisar, Haryana — <span>125001</span>

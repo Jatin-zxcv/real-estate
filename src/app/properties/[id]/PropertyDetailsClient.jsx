@@ -184,6 +184,24 @@ const PropertyDetailsClient = ({ property, nextProperty }) => {
               </Copy>
             </div>
             <div className="property-col">
+              <div className="quick-contact-grid">
+                <a href="tel:+919306899027" className="quick-contact-card">
+                  <span className="quick-contact-icon">📞</span>
+                  <span className="quick-contact-label">Call Now</span>
+                  <span className="quick-contact-value">+91 93068 99027</span>
+                </a>
+                <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="quick-contact-card">
+                  <span className="quick-contact-icon">💬</span>
+                  <span className="quick-contact-label">WhatsApp</span>
+                  <span className="quick-contact-value">Send Message</span>
+                </a>
+                <a href="mailto:js6071251@gmail.com" className="quick-contact-card">
+                  <span className="quick-contact-icon">✉️</span>
+                  <span className="quick-contact-label">Email</span>
+                  <span className="quick-contact-value">js6071251@gmail.com</span>
+                </a>
+              </div>
+
               <div className="inquiry-form-wrapper">
                 <Copy delay={0.15}>
                   <h3>Schedule a Visit or Get More Information</h3>
@@ -254,28 +272,6 @@ const PropertyDetailsClient = ({ property, nextProperty }) => {
                   </form>
                 )}
               </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="property-quick-contact">
-          <div className="container">
-            <div className="quick-contact-grid">
-              <a href="tel:+919306899027" className="quick-contact-card">
-                <span className="quick-contact-icon">📞</span>
-                <span className="quick-contact-label">Call Now</span>
-                <span className="quick-contact-value">+91 93068 99027</span>
-              </a>
-              <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="quick-contact-card">
-                <span className="quick-contact-icon">💬</span>
-                <span className="quick-contact-label">WhatsApp</span>
-                <span className="quick-contact-value">Send Message</span>
-              </a>
-              <a href="mailto:js6071251@gmail.com" className="quick-contact-card">
-                <span className="quick-contact-icon">✉️</span>
-                <span className="quick-contact-label">Email</span>
-                <span className="quick-contact-value">js6071251@gmail.com</span>
-              </a>
             </div>
           </div>
         </section>

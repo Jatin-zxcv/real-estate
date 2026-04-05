@@ -53,37 +53,10 @@ export default function Home() {
 
     if (showPreloader) {
       setLoaderAnimating(true);
-      const counts = document.querySelectorAll(".count");
 
-      counts.forEach((count, index) => {
-        const digits = count.querySelectorAll(".digit h1");
-
-        tl.to(
-          digits,
-          {
-            y: "0%",
-            duration: 1,
-            stagger: 0.075,
-          },
-          index * 1
-        );
-
-        if (index < counts.length) {
-          tl.to(
-            digits,
-            {
-              y: "-100%",
-              duration: 1,
-              stagger: 0.075,
-            },
-            index * 1 + 1
-          );
-        }
-      });
-
-      tl.to(".spinner", {
-        opacity: 0,
-        duration: 0.3,
+      tl.to(".divider", {
+        scaleY: "100%",
+        duration: 1.5,
       });
 
       tl.to(
@@ -92,14 +65,13 @@ export default function Home() {
           y: "0%",
           duration: 1,
         },
-        "<"
+        "-=0.5"
       );
 
-      tl.to(".divider", {
-        scaleY: "100%",
-        duration: 1,
-        onComplete: () =>
-          gsap.to(".divider", { opacity: 0, duration: 0.3, delay: 0.3 }),
+      tl.to(".divider", { 
+        opacity: 0, 
+        duration: 0.3, 
+        delay: 0.5 
       });
 
       tl.to("#word-1 h1", {
@@ -179,51 +151,6 @@ export default function Home() {
             </div>
           </div>
           <div className="divider"></div>
-          <div className="spinner-container">
-            <div className="spinner"></div>
-          </div>
-          <div className="counter">
-            <div className="count">
-              <div className="digit">
-                <h1>0</h1>
-              </div>
-              <div className="digit">
-                <h1>0</h1>
-              </div>
-            </div>
-            <div className="count">
-              <div className="digit">
-                <h1>2</h1>
-              </div>
-              <div className="digit">
-                <h1>7</h1>
-              </div>
-            </div>
-            <div className="count">
-              <div className="digit">
-                <h1>6</h1>
-              </div>
-              <div className="digit">
-                <h1>5</h1>
-              </div>
-            </div>
-            <div className="count">
-              <div className="digit">
-                <h1>9</h1>
-              </div>
-              <div className="digit">
-                <h1>8</h1>
-              </div>
-            </div>
-            <div className="count">
-              <div className="digit">
-                <h1>9</h1>
-              </div>
-              <div className="digit">
-                <h1>9</h1>
-              </div>
-            </div>
-          </div>
         </div>
       )}
       <Nav />
@@ -235,12 +162,12 @@ export default function Home() {
         <div className="container">
           <div className="hero-content">
             <div className="hero-header">
-              <Copy animateOnScroll={false} delay={showPreloader ? 10 : 0.85}>
+              <Copy animateOnScroll={false} delay={showPreloader ? 5.5 : 0.85}>
                 <h1>We don't just build properties — we build assets</h1>
               </Copy>
             </div>
             <div className="hero-tagline">
-              <Copy animateOnScroll={false} delay={showPreloader ? 10.15 : 1}>
+              <Copy animateOnScroll={false} delay={showPreloader ? 5.65 : 1}>
                 <p>
                   Sharma Real Estates brings you premium residential, commercial, 
                   and investment properties in Hisar. Trusted by hundreds of families 
@@ -252,7 +179,7 @@ export default function Home() {
               label="View Properties"
               route="/properties"
               animateOnScroll={false}
-              delay={showPreloader ? 10.3 : 1.15}
+              delay={showPreloader ? 5.8 : 1.15}
             />
           </div>
         </div>
@@ -274,7 +201,7 @@ export default function Home() {
             <div className="stat">
               <div className="stat-count">
                 <Copy delay={0.2}>
-                  <h2>₹250Cr+</h2>
+                  <h2>₹25Cr+</h2>
                 </Copy>
               </div>
               <div className="stat-divider"></div>
@@ -287,7 +214,7 @@ export default function Home() {
             <div className="stat">
               <div className="stat-count">
                 <Copy delay={0.3}>
-                  <h2>15+</h2>
+                  <h2>20+</h2>
                 </Copy>
               </div>
               <div className="stat-divider"></div>
@@ -300,7 +227,7 @@ export default function Home() {
             <div className="stat">
               <div className="stat-count">
                 <Copy delay={0.4}>
-                  <h2>98%</h2>
+                  <h2>100%</h2>
                 </Copy>
               </div>
               <div className="stat-divider"></div>
@@ -369,7 +296,7 @@ export default function Home() {
         <div className="container">
           <div className="featured-projects-header-callout">
             <Copy delay={0.1}>
-              <p>Featured Properties</p>
+              <p>Top Listed Properties</p>
             </Copy>
           </div>
           <div className="featured-projects-header">
@@ -430,7 +357,7 @@ export default function Home() {
         img="/home/home-cta-window.jpg"
         header="Sharma Real Estates"
         callout="Your trusted partner in real estate"
-        description="With over 15 years of experience in the Hisar property market, we bring you opportunities that others miss. Let us help you find your perfect property."
+        description="With over 20 years of experience in the Hisar property market, we bring you opportunities that others miss. Let us help you find your perfect property."
       />
       <ConditionalFooter />
     </>

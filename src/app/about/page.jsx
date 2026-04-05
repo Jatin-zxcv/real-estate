@@ -85,7 +85,7 @@ const AboutPage = () => {
               <div className="our-story-body">
                 <Copy delay={0.15}>
                   <p className="lg">
-                    Founded in Hisar over 15 years ago, Sharma Real Estates 
+                    Founded in Hisar over 20 years ago, Sharma Real Estates 
                     began with a simple belief: everyone deserves a trustworthy 
                     partner in their property journey. What started as a small 
                     family business has grown into one of Hisar's most respected 

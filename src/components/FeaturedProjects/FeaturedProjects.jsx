@@ -2,57 +2,44 @@
 import "./FeaturedProjects.css";
 import featuredProjectsContent from "./featured-projects-content";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+import { useViewTransition } from "@/hooks/useViewTransition";
+
+gsap.registerPlugin(ScrollTrigger);
+
 const FeaturedProjects = () => {
+  const containerRef = useRef(null);
+  const { navigateWithTransition } = useViewTransition();
+
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
+    if (!containerRef.current) return;
 
-    const featuredProjectCards = gsap.utils.toArray(".featured-project-card");
+    const cards = containerRef.current.querySelectorAll(".featured-property-card");
 
-    featuredProjectCards.forEach((featuredProjectCard, index) => {
-      if (index < featuredProjectCards.length - 1) {
-        const featuredProjectCardInner = featuredProjectCard.querySelector(
-          ".featured-project-card-inner"
-        );
+    cards.forEach((card, index) => {
+      gsap.set(card, {
+        opacity: 0,
+        y: 60,
+      });
 
-        const isMobile = window.innerWidth <= 1000;
-
-        gsap.fromTo(
-          featuredProjectCardInner,
-          {
-            y: "0%",
-            z: 0,
-            rotationX: 0,
-          },
-          {
-            y: "-50%",
-            z: -250,
-            rotationX: 45,
-            scrollTrigger: {
-              trigger: featuredProjectCards[index + 1],
-              start: isMobile ? "top 85%" : "top 100%",
-              end: "top -75%",
-              scrub: true,
-              pin: featuredProjectCard,
-              pinSpacing: false,
-            },
-          }
-        );
-
-        gsap.to(featuredProjectCardInner, {
-          "--after-opacity": 1,
-          scrollTrigger: {
-            trigger: featuredProjectCards[index + 1],
-            start: "top 75%",
-            end: "top 0%",
-            scrub: true,
-          },
-        });
-      }
+      ScrollTrigger.create({
+        trigger: card,
+        start: "top 90%",
+        once: true,
+        onEnter: () => {
+          gsap.to(card, {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            delay: index * 0.1,
+            ease: "power3.out",
+          });
+        },
+      });
     });
 
     return () => {
@@ -61,32 +48,28 @@ const FeaturedProjects = () => {
   }, []);
 
   return (
-    <>
-      <div className="featured-projects">
-        {featuredProjectsContent.map((project, index) => (
-          <div key={index} className="featured-project-card">
-            <div className="featured-project-card-inner">
-              <div className="featured-project-card-content">
-                <div className="featured-project-card-info">
-                  <p>{project.info}</p>
-                </div>
-                <div className="featured-project-card-content-main">
-                  <div className="featured-project-card-title">
-                    <h2>{project.title}</h2>
-                  </div>
-                  <div className="featured-project-card-description">
-                    <p className="lg">{project.description}</p>
-                  </div>
-                </div>
-              </div>
-              <div className="featured-project-card-img">
+    <div className="featured-projects" ref={containerRef}>
+      <div className="container">
+        <div className="featured-projects-grid">
+          {featuredProjectsContent.map((project, index) => (
+            <div
+              key={index}
+              className="featured-property-card"
+              onClick={() => navigateWithTransition("/properties")}
+            >
+              <div className="featured-property-img">
                 <img src={project.image} alt={project.title} />
+                <div className="featured-property-badge">{project.info}</div>
+              </div>
+              <div className="featured-property-info">
+                <h3>{project.title}</h3>
+                <p>{project.description}</p>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -76,7 +76,7 @@ const TopBar = () => {
             navigateWithTransition("/");
           }}
         >
-          <img src="/logos/sharma-logo.png" alt="Sharma Real Estates" />
+          <img src="/logos/terrene-logo-symbol.png" alt="Sharma Real Estates" />
         </a>
       </div>
       <div className="top-bar-cta">

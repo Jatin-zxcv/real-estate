@@ -109,6 +109,25 @@
   flex-shrink: 0;
   position: relative;
   z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--base-300);
+}
+
+.client-reviews .client-initial {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--base-500);
+  line-height: 1;
+}
+
+.client-reviews .client-item.active .client-avatar {
+  background-color: var(--base-400);
+}
+
+.client-reviews .client-item:hover .client-avatar {
+  background-color: var(--base-400);
 }
 
 .client-reviews .client-info {

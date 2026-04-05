@@ -19,6 +19,10 @@ const ClientReviews = () => {
   const imageContainerRef = useRef(null);
   const masterTimelineRef = useRef(null);
 
+  const getInitial = (name) => {
+    return name.charAt(0).toUpperCase();
+  };
+
   const getExpandedWidth = () => {
     if (!containerRef.current) return "10rem";
 
@@ -298,7 +302,7 @@ const ClientReviews = () => {
                 onClick={() => handleClientClick(index)}
               >
                 <div className="client-avatar">
-                  <img src={client.avatar} alt={client.name} />
+                  <span className="client-initial">{getInitial(client.name)}</span>
                 </div>
                 {index === visualClient && (
                   <div

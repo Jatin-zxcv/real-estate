@@ -27,6 +27,20 @@ const featuredProjectsContent = [
       "Exquisite 5 BHK designer villa with landscaped gardens, private pool, home theater, and smart home automation. The epitome of luxury living in Hisar.",
     image: "/featured-projects/featured-work-4.jpg",
   },
+  {
+    info: "Investment Plot in Sector 11 • ₹45 Lakhs",
+    title: "Prime Investment Plot",
+    description:
+      "Excellent investment opportunity with clear titles and all approvals in place. Located in a rapidly developing area with strong appreciation potential.",
+    image: "/featured-projects/featured-work-1.jpg",
+  },
+  {
+    info: "Rental PG in Urban Estate • ₹8,500/month",
+    title: "Modern PG Accommodation",
+    description:
+      "Fully furnished PG accommodation with all amenities including WiFi, meals, and housekeeping. Ideal for working professionals and students.",
+    image: "/featured-projects/featured-work-2.jpg",
+  },
 ];
 
 export default featuredProjectsContent;
