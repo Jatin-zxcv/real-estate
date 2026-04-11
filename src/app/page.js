@@ -209,7 +209,7 @@ export default function Home() {
             <div className="stat">
               <div className="stat-count">
                 <Copy delay={0.2}>
-                  <h2>₹25Cr+</h2>
+                  <h2>₹50Cr+</h2>
                 </Copy>
               </div>
               <div className="stat-divider"></div>
@@ -315,14 +315,6 @@ export default function Home() {
         </div>
         <FeaturedProjects />
       </section>
-      <section className="client-reviews-container">
-        <div className="container">
-          <div className="client-reviews-header-callout">
-            <p>What our clients say</p>
-          </div>
-          <ClientReviews />
-        </div>
-      </section>
       <section className="gallery-callout">
         <div className="container">
           <div className="gallery-callout-col">
@@ -359,6 +351,14 @@ export default function Home() {
               <AnimatedButton label="All Properties" route="/properties" />
             </div>
           </div>
+        </div>
+      </section>
+      <section className="client-reviews-container">
+        <div className="container">
+          <div className="client-reviews-header-callout">
+            <p>What our clients say</p>
+          </div>
+          <ClientReviews />
         </div>
       </section>
       <CTAWindow

@@ -154,7 +154,10 @@ const Footer = () => {
               Hisar, Haryana — <span>125001</span>
             </p>
             <p>+91 93068 99027</p>
-            <p>All rights reserved &copy; 2025</p>
+            <div className="footer-copyright-right">
+              <p>Website Made by Jatin Sharma</p>
+              <p>All rights reserved &copy; 2025</p>
+            </div>
           </div>
         </div>
       </div>
