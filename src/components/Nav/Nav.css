@@ -77,6 +77,34 @@
   color: var(--base-100);
 }
 
+.menu-follow-us .menu-follow-grid {
+  display: flex;
+  align-items: stretch;
+  gap: 1rem;
+}
+
+.menu-follow-us .menu-follow-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.menu-follow-us .menu-follow-divider {
+  width: 1px;
+  background-color: rgba(242, 237, 230, 0.25);
+  align-self: stretch;
+}
+
+.menu-follow-us a {
+  color: var(--base-100);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.menu-follow-us a:hover {
+  color: var(--base-200);
+}
+
 .socials .sub-col p {
   position: relative;
   margin-bottom: 0.25rem;
@@ -97,7 +125,7 @@
 @media (max-width: 1000px) {
   .link a h2 {
     font-size: 2.25rem;
-    line-height: 1.2s;
+    line-height: 1.2;
   }
 
   .col-2 {
@@ -109,11 +137,16 @@
     width: 100%;
     flex-direction: column;
     align-items: flex-start;
-    padding-bottom: 10rem;
+    gap: 1.25rem;
+    padding-bottom: 4rem;
   }
 
   .socials .sub-col {
     flex: 1;
+  }
+
+  .menu-follow-us .menu-follow-grid {
+    gap: 0.75rem;
   }
 
   .menu-commissions {

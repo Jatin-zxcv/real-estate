@@ -30,19 +30,21 @@
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
-  gap: 0;
+  gap: 0.5rem;
 }
 
 .loader #word-1 {
   position: relative;
+  left: 0rem;
+  padding-right: 0.25rem;
   color: var(--base-100);
-  padding-left: 4rem;
 }
 
 .loader #word-2 {
   position: relative;
+  left: 0.5rem;
+  padding-right: 0.25rem;
   color: var(--base-100);
-  padding-left: 4rem;
 }
 
 .loader .word h1 {
@@ -62,24 +64,15 @@
   background-color: rgba(242, 237, 230, 0.125);
 }
 
-
-
-.loader .line {
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
-}
-
+.loader .line,
 .loader .word {
-  overflow: hidden;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
 }
 
 .loader .line h1,
 .loader .line p {
   position: relative;
   transform: translateY(120%);
-  will-change: transform;
-}
-
-.loader .word h1 {
   will-change: transform;
 }
 
@@ -101,6 +94,10 @@
 }
 
 @media (max-width: 1000px) {
+  .loader .intro-logo {
+    gap: 1.25rem;
+  }
+
   .loader .word h1 {
     font-size: 1.5rem;
   }

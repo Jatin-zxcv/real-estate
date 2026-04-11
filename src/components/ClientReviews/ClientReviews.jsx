@@ -10,7 +10,6 @@ import { SplitText } from "gsap/SplitText";
 const ClientReviews = () => {
   const [activeClient, setActiveClient] = useState(0);
   const [visualClient, setVisualClient] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false);
   const clientRefs = useRef([]);
   const containerRef = useRef(null);
   const reviewTextRef = useRef(null);
@@ -53,8 +52,7 @@ const ClientReviews = () => {
 
     return gsap.to(newImg, {
       opacity: 1,
-      duration: 1,
-      delay: 0.5,
+      duration: 0.6,
       ease: "power2.out",
       onComplete: () => {
         const allImages = imageContainerRef.current.querySelectorAll("img");
@@ -173,13 +171,11 @@ const ClientReviews = () => {
   }, []);
 
   const handleClientClick = (index) => {
-    if (index === activeClient || isAnimating) return;
+    if (index === visualClient) return;
 
     if (masterTimelineRef.current) {
       masterTimelineRef.current.kill();
     }
-
-    setIsAnimating(true);
 
     const expandedWidth = getExpandedWidth();
 
@@ -199,7 +195,7 @@ const ClientReviews = () => {
     }
 
     tl.to(
-      clientRefs.current[activeClient],
+      clientRefs.current[visualClient],
       {
         width: "3rem",
         duration: 0.75,
@@ -270,10 +266,7 @@ const ClientReviews = () => {
     }
 
     tl.call(() => {
-      setTimeout(() => {
-        setIsAnimating(false);
-        masterTimelineRef.current = null;
-      }, 250);
+      masterTimelineRef.current = null;
     });
   };
 
@@ -298,7 +291,7 @@ const ClientReviews = () => {
                 ref={(el) => (clientRefs.current[index] = el)}
                 className={`client-item ${
                   index === visualClient ? "active" : ""
-                } ${isAnimating ? "animating" : ""}`}
+                }`}
                 onClick={() => handleClientClick(index)}
               >
                 <div className="client-avatar">

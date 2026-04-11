@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import Nav from "@/components/Nav/Nav";
 import ConditionalFooter from "@/components/ConditionalFooter/ConditionalFooter";
@@ -10,6 +10,8 @@ import AnimatedButton from "@/components/AnimatedButton/AnimatedButton";
 
 const PropertyDetailsClient = ({ property, nextProperty }) => {
   const [activeImage, setActiveImage] = useState(0);
+  const touchStartXRef = useRef(0);
+  const touchCurrentXRef = useRef(0);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -39,6 +41,30 @@ const PropertyDetailsClient = ({ property, nextProperty }) => {
     }, 3000);
   };
 
+  const handleGalleryTouchStart = (e) => {
+    const startX = e.touches[0]?.clientX || 0;
+    touchStartXRef.current = startX;
+    touchCurrentXRef.current = startX;
+  };
+
+  const handleGalleryTouchMove = (e) => {
+    touchCurrentXRef.current = e.touches[0]?.clientX || touchCurrentXRef.current;
+  };
+
+  const handleGalleryTouchEnd = () => {
+    const swipeDistance = touchStartXRef.current - touchCurrentXRef.current;
+    const minimumSwipeDistance = 35;
+
+    if (Math.abs(swipeDistance) < minimumSwipeDistance) return;
+
+    if (swipeDistance > 0) {
+      setActiveImage((prev) => Math.min(prev + 1, property.images.length - 1));
+      return;
+    }
+
+    setActiveImage((prev) => Math.max(prev - 1, 0));
+  };
+
   if (!property) {
     return (
       <>
@@ -66,6 +92,41 @@ const PropertyDetailsClient = ({ property, nextProperty }) => {
       <Nav />
       <div className="page property-details">
         <section className="property-hero">
+          {property.images.length > 0 && (
+            <div className="property-mobile-gallery">
+              <div
+                className="property-mobile-gallery-viewport"
+                onTouchStart={handleGalleryTouchStart}
+                onTouchMove={handleGalleryTouchMove}
+                onTouchEnd={handleGalleryTouchEnd}
+              >
+                <div
+                  className="property-mobile-gallery-track"
+                  style={{ transform: `translateX(-${activeImage * 100}%)` }}
+                >
+                  {property.images.map((image, index) => (
+                    <div className="property-mobile-gallery-slide" key={index}>
+                      <img src={image} alt={`${property.title} - Slide ${index + 1}`} />
+                    </div>
+                  ))}
+                </div>
+                {property.images.length > 1 && (
+                  <div className="property-mobile-gallery-dots">
+                    {property.images.map((_, index) => (
+                      <button
+                        key={index}
+                        type="button"
+                        className={`property-gallery-dot ${activeImage === index ? "active" : ""}`}
+                        onClick={() => setActiveImage(index)}
+                        aria-label={`View image ${index + 1}`}
+                      ></button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
           <div className="property-hero-img">
             <img src={property.images[activeImage]} alt={property.title} />
           </div>

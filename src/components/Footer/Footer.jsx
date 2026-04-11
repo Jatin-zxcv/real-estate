@@ -12,6 +12,8 @@ import Copy from "../Copy/Copy";
 
 import { RiInstagramLine } from "react-icons/ri";
 import { RiWhatsappLine } from "react-icons/ri";
+import { RiYoutubeLine } from "react-icons/ri";
+import { RiFacebookCircleLine } from "react-icons/ri";
 import { RiPhoneLine } from "react-icons/ri";
 import { RiMailLine } from "react-icons/ri";
 
@@ -91,22 +93,13 @@ const Footer = () => {
                   <h3>Properties</h3>
                 </a>
                 <a
-                  href="/blog"
+                  href="/advice"
                   onClick={(e) => {
                     e.preventDefault();
-                    navigateWithTransition("/blog");
+                    navigateWithTransition("/advice");
                   }}
                 >
-                  <h3>Blog</h3>
-                </a>
-                <a
-                  href="/blueprints"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    navigateWithTransition("/blueprints");
-                  }}
-                >
-                  <h3>Gallery</h3>
+                  <h3>Advice</h3>
                 </a>
                 <a
                   href="/contact"
@@ -130,6 +123,12 @@ const Footer = () => {
               <a href="https://wa.me/919306899027?text=Hi" target="_blank" rel="noopener noreferrer" className="icon">
                 <RiWhatsappLine />
               </a>
+              <a href="https://youtube.com/@sharmarealestateshisar?si=4Fnx87zoBO8xy6D-" target="_blank" rel="noopener noreferrer" className="icon">
+                <RiYoutubeLine />
+              </a>
+              <a href="https://www.facebook.com/share/1B6hquJhhG/" target="_blank" rel="noopener noreferrer" className="icon">
+                <RiFacebookCircleLine />
+              </a>
               <a href="tel:+919306899027" className="icon">
                 <RiPhoneLine />
               </a>
@@ -142,7 +141,7 @@ const Footer = () => {
             <Copy delay={0.1}>
               <p>
                 Your trusted partner for premium properties in Hisar. 
-                15+ years of excellence in real estate.
+                20+ years of excellence in real estate.
               </p>
             </Copy>
           </div>

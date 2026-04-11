@@ -56,7 +56,7 @@ const AboutPage = () => {
               <div className="fact">
                 <Copy delay={0.3}>
                   <p>Years Experience</p>
-                  <h2>15+</h2>
+                  <h2>20+</h2>
                 </Copy>
               </div>
               <div className="fact">
@@ -169,7 +169,7 @@ const AboutPage = () => {
           callout="Let's start your journey"
           description="Whether you're looking for your dream home, a commercial space, or an investment opportunity — we're here to help you find the perfect property."
         />
-        <Spotlight />
+        {/* <Spotlight /> */}
       </div>
       <ConditionalFooter />
     </>

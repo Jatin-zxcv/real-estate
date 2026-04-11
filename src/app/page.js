@@ -75,7 +75,7 @@ export default function Home() {
       });
 
       tl.to("#word-1 h1", {
-        y: "100%",
+        y: "250%",
         duration: 1,
         delay: 0.3,
       });
@@ -83,7 +83,7 @@ export default function Home() {
       tl.to(
         "#word-2 h1",
         {
-          y: "-100%",
+          y: "-250%",
           duration: 1,
         },
         "<"
@@ -100,7 +100,11 @@ export default function Home() {
             gsap.to(".hero-img", { scale: 1, duration: 2, ease: "hop" });
           },
           onComplete: () => {
-            gsap.set(".loader", { pointerEvents: "none" });
+            gsap.set(".loader", {
+              pointerEvents: "none",
+              autoAlpha: 0,
+              display: "none",
+            });
             setLoaderAnimating(false);
           },
         },
@@ -147,7 +151,11 @@ export default function Home() {
               </h1>
             </div>
             <div className="word" id="word-2">
-              <h1>Real Estates</h1>
+              <h1>
+                Real
+                <br />
+                Estates
+              </h1>
             </div>
           </div>
           <div className="divider"></div>
@@ -348,7 +356,7 @@ export default function Home() {
                   to investment plots — find the property that fits your dreams.
                 </h3>
               </Copy>
-              <AnimatedButton label="Browse All Properties" route="/properties" />
+              <AnimatedButton label="All Properties" route="/properties" />
             </div>
           </div>
         </div>

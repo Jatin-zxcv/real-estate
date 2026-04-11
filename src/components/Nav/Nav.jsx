@@ -8,7 +8,6 @@ import {
   useRef,
   useLayoutEffect,
 } from "react";
-import { useRouter } from "next/navigation";
 
 import gsap from "gsap";
 import CustomEase from "gsap/CustomEase";
@@ -27,7 +26,6 @@ const Nav = () => {
   const menuRef = useRef(null);
   const isInitializedRef = useRef(false);
   const splitTextRefs = useRef([]);
-  const router = useRouter();
   const lenis = useLenis();
 
   const { navigateWithTransition } = useViewTransition();
@@ -208,7 +206,7 @@ const Nav = () => {
       setIsNavigating(true);
       navigateWithTransition(href);
     },
-    [isNavigating, router, isOpen, setIsOpen]
+    [isNavigating, isOpen, setIsOpen, navigateWithTransition]
   );
 
   const splitTextIntoSpans = (text) => {
@@ -237,14 +235,6 @@ const Nav = () => {
               </div>
               <div className="link">
                 <a
-                  href="/about"
-                  onClick={(e) => handleLinkClick(e, "/about")}
-                >
-                  <h2>About Us</h2>
-                </a>
-              </div>
-              <div className="link">
-                <a
                   href="/properties"
                   onClick={(e) => handleLinkClick(e, "/properties")}
                 >
@@ -253,20 +243,28 @@ const Nav = () => {
               </div>
               <div className="link">
                 <a
-                  href="/blog"
-                  onClick={(e) => handleLinkClick(e, "/blog")}
+                  href="/about"
+                  onClick={(e) => handleLinkClick(e, "/about")}
                 >
-                  <h2>Blog</h2>
+                  <h2>About Us</h2>
                 </a>
               </div>
               <div className="link">
+                <a
+                  href="/advice"
+                  onClick={(e) => handleLinkClick(e, "/advice")}
+                >
+                  <h2>Advice</h2>
+                </a>
+              </div>
+              {/* <div className="link">
                 <a
                   href="/blueprints"
                   onClick={(e) => handleLinkClick(e, "/blueprints")}
                 >
                   <h2>Gallery</h2>
                 </a>
-              </div>
+              </div> */}
               <div className="link">
                 <a
                   href="/contact"
@@ -292,10 +290,35 @@ const Nav = () => {
                 </div>
               </div>
               <div className="sub-col">
-                <div className="menu-meta">
+                <div className="menu-meta menu-follow-us">
                   <p>Follow Us</p>
-                  <p><a href="https://instagram.com/sharma_real_estates_hisar" target="_blank" rel="noopener noreferrer">Instagram</a></p>
-                  <p><a href="https://wa.me/919306899027?text=Hi" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
+                  <div className="menu-follow-grid">
+                    <div className="menu-follow-col">
+                      <p>
+                        <a href="https://instagram.com/sharma_real_estates_hisar" target="_blank" rel="noopener noreferrer">
+                          Instagram
+                        </a>
+                      </p>
+                      <p>
+                        <a href="https://wa.me/919306899027?text=Hi" target="_blank" rel="noopener noreferrer">
+                          WhatsApp
+                        </a>
+                      </p>
+                    </div>
+                    <span className="menu-follow-divider" aria-hidden="true"></span>
+                    <div className="menu-follow-col">
+                      <p>
+                        <a href="https://youtube.com/@sharmarealestateshisar?si=4Fnx87zoBO8xy6D-" target="_blank" rel="noopener noreferrer">
+                          YouTube
+                        </a>
+                      </p>
+                      <p>
+                        <a href="https://www.facebook.com/share/1B6hquJhhG/" target="_blank" rel="noopener noreferrer">
+                          Facebook
+                        </a>
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

@@ -9,14 +9,12 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Nav from "@/components/Nav/Nav";
 import ConditionalFooter from "@/components/ConditionalFooter/ConditionalFooter";
 import Copy from "@/components/Copy/Copy";
-import { useViewTransition } from "@/hooks/useViewTransition";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const BlogPage = () => {
   const blogRef = useRef(null);
   const scrollTriggerInstances = useRef([]);
-  const { navigateWithTransition } = useViewTransition();
   const [activeCategory, setActiveCategory] = useState("All");
   const [filteredPosts, setFilteredPosts] = useState(blogPosts);
   
@@ -143,13 +141,8 @@ const BlogPage = () => {
                 {filteredPosts.map((post) => (
                   <a
                     key={post.id}
-                    href={`/blog/${post.slug}`}
+                    href={`/advice/${post.slug}`}
                     className="blog-card"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      // For now, blog detail pages aren't implemented
-                      // navigateWithTransition(`/blog/${post.slug}`);
-                    }}
                   >
                     <div className="blog-img">
                       <img src={post.thumbnail} alt={post.title} />

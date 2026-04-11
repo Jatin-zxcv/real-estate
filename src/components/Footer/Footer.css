@@ -74,6 +74,7 @@
 .footer .footer-socials-wrapper {
   display: flex;
   gap: 0.25rem;
+  flex-wrap: wrap;
 }
 
 .footer .footer-socials-wrapper .icon {
@@ -156,6 +157,11 @@
 
   .footer .footer-meta .container.footer-meta-header {
     margin-bottom: 0;
+  }
+
+  .footer .footer-socials-wrapper .icon {
+    width: 3.5rem;
+    height: 3.5rem;
   }
 
   .footer .footer-meta-header .footer-meta-col:nth-child(2) {
