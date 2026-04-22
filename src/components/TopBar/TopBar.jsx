@@ -2,6 +2,7 @@
 import "./TopBar.css";
 
 import { useRef, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
@@ -14,8 +15,13 @@ gsap.registerPlugin(ScrollTrigger);
 const TopBar = () => {
   const topBarRef = useRef(null);
   const { navigateWithTransition } = useViewTransition();
+  const pathname = usePathname();
   let lastScrollY = 0;
   let isScrolling = false;
+
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
 
   useEffect(() => {
     const topBar = topBarRef.current;

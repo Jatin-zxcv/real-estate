@@ -1,0 +1,177 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum Category {
+  RESIDENTIAL
+  COMMERCIAL
+  LAND
+  RENTAL
+}
+
+enum PropertyStatus {
+  AVAILABLE
+  SOLD
+  UNDER_CONSTRUCTION
+  RENTED
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  FOLLOW_UP
+  CLOSED
+  CONVERTED
+}
+
+enum InquirySource {
+  CONTACT_FORM
+  PROPERTY_DETAIL
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  image         String?
+  role          Role      @default(ADMIN)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+
+  @@map("user")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id @default(cuid())
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@unique([providerId, accountId])
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([identifier, value])
+  @@map("verification")
+}
+
+model Property {
+  id               String         @id @default(cuid())
+  title            String
+  slug             String         @unique
+  description      String         @db.Text
+  shortDescription String?
+  price            Decimal        @db.Decimal(12, 2)
+  category         Category
+  subcategory      String?
+  status           PropertyStatus @default(AVAILABLE)
+  address          String
+  city             String         @default("Hisar")
+  state            String         @default("Haryana")
+  pincode          String?
+  area             Decimal        @db.Decimal(12, 2)
+  bedrooms         Int?
+  bathrooms        Int?
+  amenities        String[]
+  images           String[]
+  thumbnail        String?
+  featured         Boolean        @default(false)
+  views            Int            @default(0)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  inquiries        Inquiry[]
+
+  @@index([category, status])
+  @@index([city, state])
+  @@index([featured])
+  @@map("property")
+}
+
+model Inquiry {
+  id         String        @id @default(cuid())
+  name       String
+  email      String
+  phone      String
+  subject    String?
+  message    String?       @db.Text
+  source     InquirySource @default(CONTACT_FORM)
+  status     LeadStatus    @default(NEW)
+  propertyId String?
+  propertyReference String?
+  property   Property?     @relation(fields: [propertyId], references: [id], onDelete: SetNull)
+  ipAddress  String?
+  userAgent  String?
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+
+  @@index([status, createdAt])
+  @@index([source, createdAt])
+  @@index([propertyId])
+  @@map("inquiry")
+}
+
+model BlogPost {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  content     String   @db.Text
+  excerpt     String?
+  thumbnail   String?
+  author      String   @default("Sharma Real Estates")
+  category    String?
+  readTime    String?
+  published   Boolean  @default(false)
+  publishedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([published, publishedAt])
+  @@map("blog_post")
+}

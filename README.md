@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sharma Real Estates
 
-## Getting Started
+Admin-controlled real estate platform for listings and inquiries in Hisar, Haryana.
 
-First, run the development server:
+## Prerequisites
+
+- Node.js 20+
+- Corepack enabled
+- Docker Desktop (for local Postgres)
+
+## Install
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+corepack pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Environment
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Create a local env file and update secrets:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+copy .env.example .env.local
+```
 
-## Learn More
+Required values:
 
-To learn more about Next.js, take a look at the following resources:
+- `BETTER_AUTH_SECRET` (use a long random secret)
+- `ADMIN_BOOTSTRAP_TOKEN`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Local Database (Docker)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Start PostgreSQL:
 
-## Deploy on Vercel
+```bash
+corepack pnpm db:up
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Check status/logs:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+corepack pnpm db:status
+corepack pnpm db:logs
+```
+
+Apply migrations and generate Prisma client:
+
+```bash
+corepack pnpm prisma:migrate
+corepack pnpm prisma:generate
+```
+
+Stop database:
+
+```bash
+corepack pnpm db:down
+```
+
+## Run App
+
+```bash
+corepack pnpm dev
+```
+
+App URL: `http://localhost:3000`
+
+## Production Build
+
+```bash
+corepack pnpm build
+corepack pnpm start
+```

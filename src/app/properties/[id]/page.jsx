@@ -1,29 +1,37 @@
 import "./property-details.css";
 import { notFound } from "next/navigation";
-
-import { getPropertyById, getFeaturedProperties, properties } from "@/data/properties";
+import { prisma } from "@/lib/db";
+import { formatPrice } from "@/data/properties";
 import PropertyDetailsClient from "./PropertyDetailsClient";
 
-export function generateStaticParams() {
-  return properties.map((property) => ({
-    id: property.id
-  }));
-}
-
-export const dynamicParams = false;
+export const dynamicParams = true;
 
 const PropertyDetailsPage = async ({ params }) => {
   const { id } = await params;
-  const property = getPropertyById(id);
+  
+  const property = await prisma.property.findUnique({
+    where: { id }
+  });
 
   if (!property) {
     notFound();
   }
 
-  const featuredProperties = getFeaturedProperties().filter((p) => p.id !== property.id);
-  const nextProperty = featuredProperties[0] || null;
+  // Format the property to match what the client component expects
+  const formattedProperty = {
+    ...property,
+    priceFormatted: formatPrice(Number(property.price), property.category === "RENTAL"),
+    areaFormatted: property.category === "LAND" ? `${property.area} Acres/Sq.yd` : `${property.area} sq.ft`
+  };
 
-  return <PropertyDetailsClient property={property} nextProperty={nextProperty} />;
+  const nextProperty = await prisma.property.findFirst({
+    where: {
+      featured: true,
+      id: { not: property.id }
+    }
+  });
+
+  return <PropertyDetailsClient property={formattedProperty} nextProperty={nextProperty} />;
 };
 
 export default PropertyDetailsPage;

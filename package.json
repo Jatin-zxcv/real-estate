@@ -6,10 +6,24 @@
     "dev": "set NEXT_DISABLE_WEBPACK_CACHE=1&& next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:up": "docker compose up -d postgres",
+    "db:down": "docker compose down",
+    "db:logs": "docker compose logs -f postgres",
+    "db:status": "docker compose ps postgres",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:migrate:status": "prisma migrate status",
+    "prisma:migrate:deploy": "prisma migrate deploy",
+    "prisma:studio": "prisma studio"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
+    "@neondatabase/serverless": "^1.1.0",
+    "@prisma/adapter-neon": "^7.7.0",
+    "@prisma/client": "^7.7.0",
+    "better-auth": "^1.6.5",
+    "dotenv": "^17.4.2",
     "gsap": "^3.13.0",
     "lenis": "^1.3.8",
     "next": "15.4.10",
@@ -17,6 +31,13 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-icons": "^5.5.0",
-    "split-type": "^0.3.4"
+    "resend": "^6.12.2",
+    "split-type": "^0.3.4",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@better-auth/cli": "^1.4.21",
+    "prisma": "^7.7.0",
+    "tsx": "^4.21.0"
   }
 }

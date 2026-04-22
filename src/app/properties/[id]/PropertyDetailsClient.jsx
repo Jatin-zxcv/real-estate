@@ -19,26 +19,52 @@ const PropertyDetailsClient = ({ property, nextProperty }) => {
     message: ""
   });
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    setSubmitError("");
     setFormData((prev) => ({
       ...prev,
       [name]: value
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // In production, this would send to an API
-    console.log("Inquiry submitted:", { ...formData, propertyId: property?.id });
-    setFormSubmitted(true);
+    setIsSubmitting(true);
+    setSubmitError("");
 
-    // Reset form after 3 seconds
-    setTimeout(() => {
-      setFormSubmitted(false);
+    try {
+      const response = await fetch("/api/inquiries", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+          propertyId: property?.id,
+          source: "PROPERTY_DETAIL",
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result?.success) {
+        throw new Error(result?.error || "Unable to submit inquiry right now.");
+      }
+
+      setFormSubmitted(true);
       setFormData({ name: "", email: "", phone: "", message: "" });
-    }, 3000);
+      setTimeout(() => {
+        setFormSubmitted(false);
+      }, 3000);
+    } catch (error) {
+      setSubmitError(error?.message || "Unable to submit inquiry right now.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleGalleryTouchStart = (e) => {
@@ -271,6 +297,13 @@ const PropertyDetailsClient = ({ property, nextProperty }) => {
                   </p>
                 </Copy>
 
+                {submitError && (
+                  <div className="form-success" role="alert">
+                    <h4>Submission failed</h4>
+                    <p>{submitError}</p>
+                  </div>
+                )}
+
                 {formSubmitted ? (
                   <div className="form-success">
                     <h4>Thank you for your inquiry!</h4>
@@ -327,8 +360,8 @@ const PropertyDetailsClient = ({ property, nextProperty }) => {
                         placeholder="I'd like to know more about this property..."
                       ></textarea>
                     </div>
-                    <button type="submit" className="submit-btn">
-                      Send Inquiry
+                    <button type="submit" className="submit-btn" disabled={isSubmitting}>
+                      {isSubmitting ? "Sending..." : "Send Inquiry"}
                     </button>
                   </form>
                 )}

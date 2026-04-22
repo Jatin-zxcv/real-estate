@@ -1,0 +1,7 @@
+import { z } from "zod";
+
+export const adminBootstrapSchema = z.object({
+  name: z.string().trim().min(2).max(120),
+  email: z.string().trim().email(),
+  password: z.string().min(8).max(128),
+});

@@ -1,6 +1,6 @@
 "use client";
 import "./properties.css";
-import { properties, categories } from "@/data/properties";
+import { categories, formatPrice } from "@/data/properties";
 import { useState, useRef, useEffect } from "react";
 
 import { gsap } from "gsap";
@@ -18,7 +18,37 @@ const PropertiesPage = () => {
   const scrollTriggerInstances = useRef([]);
   const { navigateWithTransition } = useViewTransition();
   const [activeCategory, setActiveCategory] = useState("ALL");
-  const [filteredProperties, setFilteredProperties] = useState(properties);
+  const [allProperties, setAllProperties] = useState([]);
+  const [filteredProperties, setFilteredProperties] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProperties = async () => {
+      try {
+        const res = await fetch("/api/properties?limit=100");
+        const json = await res.json();
+        if (json.success) {
+          const formatted = json.data.items.map(p => ({
+            ...p,
+            priceFormatted: formatPrice(Number(p.price), p.category === "RENTAL"),
+            areaFormatted: p.category === "LAND" ? `${p.area} Acres/Sq.yd` : `${p.area} sq.ft`
+          }));
+          setAllProperties(formatted);
+          if (activeCategory === "ALL") {
+            setFilteredProperties(formatted);
+          } else {
+            setFilteredProperties(formatted.filter(item => item.category === activeCategory));
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch properties:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchProperties();
+  }, []);
 
   const cleanupScrollTriggers = () => {
     scrollTriggerInstances.current.forEach((instance) => {
@@ -75,11 +105,11 @@ const PropertiesPage = () => {
 
   useEffect(() => {
     if (activeCategory === "ALL") {
-      setFilteredProperties(properties);
+      setFilteredProperties(allProperties);
     } else {
-      setFilteredProperties(properties.filter(p => p.category === activeCategory));
+      setFilteredProperties(allProperties.filter(p => p.category === activeCategory));
     }
-  }, [activeCategory]);
+  }, [activeCategory, allProperties]);
 
   useEffect(() => {
     setupAnimations();
@@ -136,7 +166,11 @@ const PropertiesPage = () => {
         </section>
         <section className="properties-list">
           <div className="container" ref={propertiesRef}>
-            {filteredProperties.length === 0 ? (
+            {isLoading ? (
+              <div className="no-properties">
+                <h3>Loading properties...</h3>
+              </div>
+            ) : filteredProperties.length === 0 ? (
               <div className="no-properties">
                 <h3>No properties found in this category</h3>
                 <p>Try selecting a different category or check back later</p>

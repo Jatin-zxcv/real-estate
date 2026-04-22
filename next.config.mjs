@@ -5,7 +5,6 @@ const assetPrefix = process.env.NEXT_ASSET_PREFIX || basePath;
 const nextConfig = {
   basePath: basePath || undefined,
   assetPrefix: assetPrefix ? assetPrefix : undefined,
-  output: 'export',
   images: {
     unoptimized: true,
   },
