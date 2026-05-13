@@ -271,6 +271,73 @@
   resize: vertical;
 }
 
+.admin-upload-field {
+  position: relative;
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  min-height: 5.5rem;
+  padding: 1rem;
+  border: 1px dashed rgba(242, 237, 230, 0.28);
+  border-radius: 0.9rem;
+  background: rgba(20, 19, 19, 0.55);
+}
+
+.admin-upload-field input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.admin-upload-field p {
+  color: var(--base-100);
+  font-weight: 650;
+}
+
+.admin-upload-field span {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--base-250);
+  font-size: 0.85rem;
+}
+
+.admin-media-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.admin-media-item {
+  overflow: hidden;
+  border: 1px solid rgba(242, 237, 230, 0.16);
+  border-radius: 0.9rem;
+  background: rgba(20, 19, 19, 0.45);
+}
+
+.admin-media-item img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.admin-media-item.single {
+  max-width: 18rem;
+}
+
+.admin-media-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  padding: 0.55rem;
+}
+
+.admin-media-actions .admin-button {
+  padding: 0.42rem 0.7rem;
+  font-size: 0.78rem;
+}
+
 .admin-checkbox-row {
   display: inline-flex;
   align-items: center;

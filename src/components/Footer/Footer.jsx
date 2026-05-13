@@ -155,7 +155,7 @@ const Footer = () => {
             </p>
             <p>+91 93068 99027</p>
             <div className="footer-copyright-right">
-              <p>Website Made by Jatin Sharma</p>
+              <p>Made by Jatin Sharma</p>
               <p>All rights reserved &copy; 2025</p>
             </div>
           </div>

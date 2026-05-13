@@ -7,6 +7,7 @@ import { formatCurrencyINR, requestJSON } from "@/components/admin/admin-utils";
 
 const CATEGORY_OPTIONS = ["RESIDENTIAL", "COMMERCIAL", "LAND", "RENTAL"];
 const STATUS_OPTIONS = ["AVAILABLE", "SOLD", "UNDER_CONSTRUCTION", "RENTED"];
+const CREATE_DRAFT_KEY = "sharma-admin-property-create-draft";
 
 const EMPTY_FORM = {
   title: "",
@@ -25,7 +26,7 @@ const EMPTY_FORM = {
   bedrooms: "",
   bathrooms: "",
   amenities: "",
-  images: "",
+  images: [],
   thumbnail: "",
   featured: false,
 };
@@ -60,7 +61,7 @@ function mapPropertyToForm(property) {
     bedrooms: property.bedrooms?.toString() || "",
     bathrooms: property.bathrooms?.toString() || "",
     amenities: listTextFromArray(property.amenities),
-    images: listTextFromArray(property.images),
+    images: Array.isArray(property.images) ? property.images : [],
     thumbnail: property.thumbnail || "",
     featured: Boolean(property.featured),
   };
@@ -95,7 +96,7 @@ function buildPayload(form) {
     bedrooms: toNullableInteger(form.bedrooms),
     bathrooms: toNullableInteger(form.bathrooms),
     amenities: splitMultiline(form.amenities),
-    images: splitMultiline(form.images),
+    images: form.images,
     thumbnail: trimOrUndefined(form.thumbnail),
     featured: form.featured,
   };
@@ -124,7 +125,34 @@ function PropertiesContent() {
   const [editingId, setEditingId] = useState("");
   const [form, setForm] = useState(EMPTY_FORM);
   const [isSaving, setIsSaving] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [deletingId, setDeletingId] = useState("");
+
+  useEffect(() => {
+    try {
+      const savedDraft = window.localStorage.getItem(CREATE_DRAFT_KEY);
+      if (!savedDraft) return;
+
+      const parsedDraft = JSON.parse(savedDraft);
+      setForm({
+        ...EMPTY_FORM,
+        ...parsedDraft,
+        images: Array.isArray(parsedDraft.images) ? parsedDraft.images : [],
+      });
+    } catch {
+      window.localStorage.removeItem(CREATE_DRAFT_KEY);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (mode !== "create") return;
+
+    const draftTimer = window.setTimeout(() => {
+      window.localStorage.setItem(CREATE_DRAFT_KEY, JSON.stringify(form));
+    }, 250);
+
+    return () => window.clearTimeout(draftTimer);
+  }, [form, mode]);
 
   const loadProperties = useCallback(async () => {
     setIsLoading(true);
@@ -168,6 +196,7 @@ function PropertiesContent() {
     setMode("create");
     setEditingId("");
     setForm(EMPTY_FORM);
+    window.localStorage.removeItem(CREATE_DRAFT_KEY);
   };
 
   const startEdit = (property) => {
@@ -176,6 +205,62 @@ function PropertiesContent() {
     setForm(mapPropertyToForm(property));
     setMessage("");
     setError("");
+  };
+
+  const handleImageUpload = async (event) => {
+    const files = Array.from(event.target.files || []);
+    if (files.length === 0 || isUploading) return;
+
+    setError("");
+    setMessage("");
+    setIsUploading(true);
+
+    try {
+      const uploadData = new FormData();
+      files.forEach((file) => uploadData.append("images", file));
+
+      const response = await fetch("/api/admin/uploads", {
+        method: "POST",
+        credentials: "include",
+        body: uploadData,
+      });
+
+      const payload = await response.json().catch(() => null);
+
+      if (!response.ok || !payload?.success) {
+        throw new Error(payload?.error || "Failed to upload images");
+      }
+
+      const uploadedUrls = (payload.data?.uploads || [])
+        .map((upload) => upload.url)
+        .filter(Boolean);
+
+      setForm((current) => {
+        const images = [...current.images, ...uploadedUrls];
+        return {
+          ...current,
+          images,
+          thumbnail: current.thumbnail || images[0] || "",
+        };
+      });
+      setMessage(`${uploadedUrls.length} image${uploadedUrls.length === 1 ? "" : "s"} uploaded.`);
+    } catch (uploadError) {
+      setError(uploadError?.message || "Failed to upload images");
+    } finally {
+      setIsUploading(false);
+      event.target.value = "";
+    }
+  };
+
+  const removeImage = (imageUrl) => {
+    setForm((current) => {
+      const images = current.images.filter((image) => image !== imageUrl);
+      return {
+        ...current,
+        images,
+        thumbnail: current.thumbnail === imageUrl ? images[0] || "" : current.thumbnail,
+      };
+    });
   };
 
   const handleSave = async (event) => {
@@ -201,6 +286,7 @@ function PropertiesContent() {
       setMessage(mode === "edit" ? "Property updated." : "Property created.");
       if (mode === "create") {
         setForm(EMPTY_FORM);
+        window.localStorage.removeItem(CREATE_DRAFT_KEY);
       }
       await loadProperties();
     } catch (saveError) {
@@ -255,8 +341,8 @@ function PropertiesContent() {
   };
 
   return (
-    <div className="admin-grid">
-      <section className="admin-panel span-8 admin-fade-in">
+    <div className="admin-grid property-admin-grid">
+      <section className="admin-panel span-7 admin-fade-in">
         <div className="admin-panel-head">
           <div>
             <h3>Property inventory</h3>
@@ -411,7 +497,7 @@ function PropertiesContent() {
         </div>
       </section>
 
-      <section className="admin-panel span-4 admin-fade-in">
+      <section className="admin-panel span-5 admin-fade-in">
         <div className="admin-panel-head">
           <div>
             <h3>{mode === "edit" ? "Edit property" : "Create property"}</h3>
@@ -626,24 +712,47 @@ function PropertiesContent() {
           </div>
 
           <div className="admin-field span-2">
-            <label htmlFor="property-images">Image URLs (comma or new line separated)</label>
-            <textarea
-              className="admin-textarea"
-              id="property-images"
-              onChange={(event) => setField("images", event.target.value)}
-              value={form.images}
-            />
-          </div>
-
-          <div className="admin-field span-2">
-            <label htmlFor="property-thumbnail">Thumbnail URL (optional)</label>
-            <input
-              className="admin-input"
-              id="property-thumbnail"
-              onChange={(event) => setField("thumbnail", event.target.value)}
-              type="url"
-              value={form.thumbnail}
-            />
+            <label htmlFor="property-images">Property images</label>
+            <div className="admin-upload-field">
+              <input
+                accept="image/*"
+                id="property-images"
+                multiple
+                onChange={handleImageUpload}
+                type="file"
+              />
+              <div>
+                <p>{isUploading ? "Uploading to Cloudinary..." : "Upload image files"}</p>
+                <span>Images are stored in Cloudinary and attached to this listing.</span>
+              </div>
+            </div>
+            {form.images.length > 0 ? (
+              <div className="admin-media-grid">
+                {form.images.map((imageUrl) => (
+                  <div className="admin-media-item" key={imageUrl}>
+                    <img alt="" src={imageUrl} />
+                    <div className="admin-media-actions">
+                      <button
+                        className={`admin-button ${form.thumbnail === imageUrl ? "" : "ghost"}`}
+                        onClick={() => setField("thumbnail", imageUrl)}
+                        type="button"
+                      >
+                        {form.thumbnail === imageUrl ? "Thumbnail" : "Use as thumbnail"}
+                      </button>
+                      <button
+                        className="admin-button danger"
+                        onClick={() => removeImage(imageUrl)}
+                        type="button"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="admin-muted">No images uploaded yet.</p>
+            )}
           </div>
 
           <div className="admin-field span-2">
@@ -659,7 +768,7 @@ function PropertiesContent() {
           </div>
 
           <div className="span-2 admin-inline-actions">
-            <button className="admin-button" disabled={isSaving} type="submit">
+            <button className="admin-button" disabled={isSaving || isUploading} type="submit">
               {isSaving ? "Saving..." : mode === "edit" ? "Update property" : "Create property"}
             </button>
             {mode === "edit" ? (

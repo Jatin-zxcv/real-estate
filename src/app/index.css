@@ -51,6 +51,15 @@
   color: var(--base-200);
 }
 
+.hero .hero-header h1 {
+  font-size: 3.5rem;
+  letter-spacing: -0.15rem;
+}
+
+.hero .hero-tagline p {
+  font-size: 1.125rem;
+}
+
 .hero .hero-stats {
   position: absolute;
   bottom: 0;
@@ -103,6 +112,15 @@
 
   .hero .hero-tagline {
     width: 75%;
+  }
+
+  .hero .hero-header h1 {
+    font-size: 2.5rem;
+    letter-spacing: -0.075rem;
+  }
+
+  .hero .hero-tagline p {
+    font-size: 1.125rem;
   }
 
   .hero .hero-stats .container {
@@ -173,6 +191,7 @@
 @media (max-width: 1000px) {
   .what-we-do .container h1 {
     margin-bottom: 8rem;
+    font-size: 2rem;
   }
 
   .what-we-do-content {

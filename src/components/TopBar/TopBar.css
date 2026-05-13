@@ -18,6 +18,10 @@
   width: 2rem;
 }
 
+.top-bar .top-bar-logo img {
+  width: 300%;
+}
+
 @media (max-width: 1000px) {
   .top-bar {
     padding: 0.5rem 1.5rem;

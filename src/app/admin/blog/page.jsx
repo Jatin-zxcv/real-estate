@@ -82,6 +82,7 @@ function BlogContent() {
   const [editingSlug, setEditingSlug] = useState("");
   const [form, setForm] = useState(EMPTY_BLOG_FORM);
   const [isSaving, setIsSaving] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [deletingSlug, setDeletingSlug] = useState("");
 
   const loadPosts = useCallback(async () => {
@@ -133,6 +134,45 @@ function BlogContent() {
     setForm(mapBlogToForm(post));
     setMessage("");
     setError("");
+  };
+
+  const handleThumbnailUpload = async (event) => {
+    const file = event.target.files?.[0];
+    if (!file || isUploading) return;
+
+    setIsUploading(true);
+    setError("");
+    setMessage("");
+
+    try {
+      const uploadData = new FormData();
+      uploadData.append("images", file);
+
+      const response = await fetch("/api/admin/uploads", {
+        method: "POST",
+        credentials: "include",
+        body: uploadData,
+      });
+
+      const payload = await response.json().catch(() => null);
+
+      if (!response.ok || !payload?.success) {
+        throw new Error(payload?.error || "Failed to upload thumbnail");
+      }
+
+      const uploadedUrl = payload.data?.uploads?.[0]?.url;
+      if (!uploadedUrl) {
+        throw new Error("Cloudinary upload completed without a usable image");
+      }
+
+      setField("thumbnail", uploadedUrl);
+      setMessage("Thumbnail uploaded.");
+    } catch (uploadError) {
+      setError(uploadError?.message || "Failed to upload thumbnail");
+    } finally {
+      setIsUploading(false);
+      event.target.value = "";
+    }
   };
 
   const handleSave = async (event) => {
@@ -385,14 +425,35 @@ function BlogContent() {
           </div>
 
           <div className="admin-field span-2">
-            <label htmlFor="blog-thumbnail">Thumbnail URL</label>
-            <input
-              className="admin-input"
-              id="blog-thumbnail"
-              onChange={(event) => setField("thumbnail", event.target.value)}
-              type="url"
-              value={form.thumbnail}
-            />
+            <label htmlFor="blog-thumbnail">Thumbnail image</label>
+            <div className="admin-upload-field">
+              <input
+                accept="image/*"
+                id="blog-thumbnail"
+                onChange={handleThumbnailUpload}
+                type="file"
+              />
+              <div>
+                <p>{isUploading ? "Uploading to Cloudinary..." : "Upload thumbnail file"}</p>
+                <span>The uploaded image will be used for this article preview.</span>
+              </div>
+            </div>
+            {form.thumbnail ? (
+              <div className="admin-media-item single">
+                <img alt="" src={form.thumbnail} />
+                <div className="admin-media-actions">
+                  <button
+                    className="admin-button danger"
+                    onClick={() => setField("thumbnail", "")}
+                    type="button"
+                  >
+                    Remove thumbnail
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <p className="admin-muted">No thumbnail uploaded yet.</p>
+            )}
           </div>
 
           <div className="admin-field">
@@ -453,7 +514,7 @@ function BlogContent() {
           </div>
 
           <div className="span-2 admin-inline-actions">
-            <button className="admin-button" disabled={isSaving} type="submit">
+            <button className="admin-button" disabled={isSaving || isUploading} type="submit">
               {isSaving ? "Saving..." : mode === "edit" ? "Update article" : "Create article"}
             </button>
             {mode === "edit" ? (

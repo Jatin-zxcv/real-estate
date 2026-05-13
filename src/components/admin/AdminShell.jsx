@@ -11,6 +11,46 @@ const AdminSessionContext = createContext({
   role: null,
 });
 
+const SESSION_CACHE_KEY = "sharma-admin-session-cache";
+const SESSION_CACHE_TTL = 5 * 60 * 1000;
+
+function readCachedSession() {
+  if (typeof window === "undefined") return null;
+
+  try {
+    const raw = window.sessionStorage.getItem(SESSION_CACHE_KEY);
+    if (!raw) return null;
+
+    const cached = JSON.parse(raw);
+    if (!cached?.session || Date.now() - cached.savedAt > SESSION_CACHE_TTL) {
+      window.sessionStorage.removeItem(SESSION_CACHE_KEY);
+      return null;
+    }
+
+    return cached.session;
+  } catch {
+    window.sessionStorage.removeItem(SESSION_CACHE_KEY);
+    return null;
+  }
+}
+
+function writeCachedSession(session) {
+  if (typeof window === "undefined") return;
+
+  if (!session) {
+    window.sessionStorage.removeItem(SESSION_CACHE_KEY);
+    return;
+  }
+
+  window.sessionStorage.setItem(
+    SESSION_CACHE_KEY,
+    JSON.stringify({
+      session,
+      savedAt: Date.now(),
+    })
+  );
+}
+
 const navItems = [
   { href: "/admin", label: "Overview" },
   { href: "/admin/properties", label: "Properties" },
@@ -32,13 +72,19 @@ export default function AdminShell({
   const router = useRouter();
   const pathname = usePathname();
 
-  const [session, setSession] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [session, setSession] = useState(() => readCachedSession());
+  const [loading, setLoading] = useState(() => !readCachedSession());
   const [error, setError] = useState("");
   const [isSigningOut, setIsSigningOut] = useState(false);
 
   const checkSession = useCallback(async () => {
-    setLoading(true);
+    const cachedSession = readCachedSession();
+    if (cachedSession) {
+      setSession(cachedSession);
+      setLoading(false);
+    } else {
+      setLoading(true);
+    }
     setError("");
 
     try {
@@ -56,12 +102,14 @@ export default function AdminShell({
 
       const normalized = extractSession(payload);
       setSession(normalized);
+      writeCachedSession(normalized);
 
       if (!normalized) {
         const nextPath = pathname || "/admin";
         router.replace(`/admin/login?next=${encodeURIComponent(nextPath)}`);
       }
     } catch (requestError) {
+      writeCachedSession(null);
       setError(requestError?.message || "Unable to validate session");
     } finally {
       setLoading(false);
@@ -93,6 +141,7 @@ export default function AdminShell({
         credentials: "include",
       });
     } finally {
+      writeCachedSession(null);
       setIsSigningOut(false);
       router.replace("/admin/login");
       router.refresh();

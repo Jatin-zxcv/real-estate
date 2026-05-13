@@ -254,9 +254,7 @@ export default function Home() {
             <Copy delay={0.1}>
               <h1>
                 <span className="spacer">&nbsp;</span>
-                At Sharma Real Estates, we connect you with premium properties 
-                that match your vision — whether you're seeking a family home, 
-                a commercial space, or a sound investment.
+                At Sharma Real Estates, we connect you with premium properties that match your vision — whether you're seeking a family home, a commercial space, or a sound investment.
               </h1>
             </Copy>
           </div>

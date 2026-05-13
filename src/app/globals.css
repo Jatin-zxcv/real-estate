@@ -103,6 +103,14 @@ a {
 span.spacer {
   display: inline-block;
   width: 20rem;
+  vertical-align: top;
+}
+
+/* Keep the spacer visually left of the heading in the what-we-do section
+   so the following text flows normally. Hide on small screens. */
+.what-we-do .container h1 .spacer {
+  float: left;
+  margin-right: 1rem;
 }
 
 .container {
@@ -117,6 +125,10 @@ span.spacer {
   h1 {
     font-size: 3rem;
     letter-spacing: -0.1rem;
+  }
+
+  .what-we-do .container h1 .spacer {
+    display: none;
   }
 
   h2 {

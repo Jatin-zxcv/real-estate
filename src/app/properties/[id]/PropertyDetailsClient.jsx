@@ -110,7 +110,7 @@ const PropertyDetailsClient = ({ property, nextProperty }) => {
   }
 
   const whatsappHref = `https://wa.me/919306899027?text=${encodeURIComponent(
-    `Hi, I'm interested in the property: ${property.title}`
+    `Hi, I'm interested in ${property.title} at ${property.address}, ${property.city}.`
   )}`;
 
   return (
