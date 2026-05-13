@@ -5,6 +5,78 @@ import { blogPosts, getBlogPostBySlug } from "@/data/blog";
 import Nav from "@/components/Nav/Nav";
 import ConditionalFooter from "@/components/ConditionalFooter/ConditionalFooter";
 import Copy from "@/components/Copy/Copy";
+import { resolveMediaUrl } from "@/lib/site";
+
+function summarizeText(text, maxLength = 160) {
+  const compactText = String(text || "").replace(/\s+/g, " ").trim();
+
+  if (compactText.length <= maxLength) {
+    return compactText;
+  }
+
+  return `${compactText.slice(0, maxLength - 1).trimEnd()}...`;
+}
+
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  const post = getBlogPostBySlug(slug);
+
+  if (!post) {
+    return {
+      title: "Advice Not Found",
+      robots: {
+        index: false,
+        follow: false,
+      },
+    };
+  }
+
+  const description = summarizeText(post.excerpt || post.title);
+  const image = resolveMediaUrl(post.thumbnail);
+  const publishedTime = post.publishedAt ? new Date(post.publishedAt).toISOString() : undefined;
+
+  return {
+    title: post.title,
+    description,
+    keywords: [
+      post.category,
+      "real estate advice",
+      "Hisar property market",
+      "property investment tips",
+      "Sharma Real Estates",
+    ].filter(Boolean),
+    alternates: {
+      canonical: `/advice/${slug}`,
+    },
+    authors: [{ name: post.author || "Sharma Real Estates" }],
+    creator: post.author || "Sharma Real Estates",
+    publisher: "Sharma Real Estates",
+    openGraph: {
+      title: `${post.title} | Sharma Real Estates`,
+      description,
+      url: `/advice/${slug}`,
+      siteName: "Sharma Real Estates",
+      locale: "en_IN",
+      type: "article",
+      publishedTime,
+      authors: [post.author || "Sharma Real Estates"],
+      images: [
+        {
+          url: image,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${post.title} | Sharma Real Estates`,
+      description,
+      images: [image],
+    },
+  };
+}
 
 export function generateStaticParams() {
   return blogPosts.map((post) => ({
