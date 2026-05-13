@@ -71,7 +71,8 @@ function buildPayload(form) {
   const toNullableInteger = (value) => {
     if (value === "") return null;
     const parsed = Number(value);
-    return Number.isFinite(parsed) ? Math.round(parsed) : null;
+    if (!Number.isFinite(parsed) || parsed <= 0) return null;
+    return Math.round(parsed);
   };
 
   const trimOrUndefined = (value) => {
@@ -261,6 +262,14 @@ function PropertiesContent() {
         thumbnail: current.thumbnail === imageUrl ? images[0] || "" : current.thumbnail,
       };
     });
+  };
+
+  const clearImages = () => {
+    setForm((current) => ({
+      ...current,
+      images: [],
+      thumbnail: "",
+    }));
   };
 
   const handleSave = async (event) => {
@@ -727,29 +736,45 @@ function PropertiesContent() {
               </div>
             </div>
             {form.images.length > 0 ? (
-              <div className="admin-media-grid">
-                {form.images.map((imageUrl) => (
-                  <div className="admin-media-item" key={imageUrl}>
-                    <img alt="" src={imageUrl} />
-                    <div className="admin-media-actions">
+              <>
+                <div className="admin-media-toolbar">
+                  <p className="admin-muted">{form.images.length} uploaded</p>
+                  <button className="admin-button danger" onClick={clearImages} type="button">
+                    Remove all
+                  </button>
+                </div>
+                <div className="admin-media-grid">
+                  {form.images.map((imageUrl) => (
+                    <div className="admin-media-item" key={imageUrl}>
+                      <img alt="" src={imageUrl} />
                       <button
-                        className={`admin-button ${form.thumbnail === imageUrl ? "" : "ghost"}`}
-                        onClick={() => setField("thumbnail", imageUrl)}
-                        type="button"
-                      >
-                        {form.thumbnail === imageUrl ? "Thumbnail" : "Use as thumbnail"}
-                      </button>
-                      <button
-                        className="admin-button danger"
+                        aria-label="Remove image"
+                        className="admin-media-remove"
                         onClick={() => removeImage(imageUrl)}
                         type="button"
                       >
-                        Remove
+                        &times;
                       </button>
+                      <div className="admin-media-actions">
+                        <button
+                          className={`admin-button ${form.thumbnail === imageUrl ? "" : "ghost"}`}
+                          onClick={() => setField("thumbnail", imageUrl)}
+                          type="button"
+                        >
+                          {form.thumbnail === imageUrl ? "Thumbnail" : "Use as thumbnail"}
+                        </button>
+                        <button
+                          className="admin-button danger"
+                          onClick={() => removeImage(imageUrl)}
+                          type="button"
+                        >
+                          Remove
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              </>
             ) : (
               <p className="admin-muted">No images uploaded yet.</p>
             )}

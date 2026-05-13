@@ -16,6 +16,8 @@
   padding: 0;
   box-sizing: border-box;
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
 }
 
 body {
@@ -98,6 +100,24 @@ a {
   line-height: 1.4;
   color: var(--base-200);
   border-radius: 0.35rem;
+}
+
+button,
+a,
+[role="button"],
+input,
+textarea,
+select,
+label {
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  button:focus,
+  a:focus,
+  [role="button"]:focus {
+    outline: none;
+  }
 }
 
 span.spacer {

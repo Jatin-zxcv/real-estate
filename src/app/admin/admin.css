@@ -308,7 +308,20 @@
   gap: 0.75rem;
 }
 
+.admin-media-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.admin-media-toolbar .admin-button {
+  padding: 0.42rem 0.7rem;
+  font-size: 0.78rem;
+}
+
 .admin-media-item {
+  position: relative;
   overflow: hidden;
   border: 1px solid rgba(242, 237, 230, 0.16);
   border-radius: 0.9rem;
@@ -331,6 +344,22 @@
   flex-wrap: wrap;
   gap: 0.45rem;
   padding: 0.55rem;
+}
+
+.admin-media-remove {
+  position: absolute;
+  top: 0.45rem;
+  right: 0.45rem;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid rgba(242, 237, 230, 0.35);
+  border-radius: 999px;
+  background: rgba(20, 19, 19, 0.72);
+  color: var(--base-100);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
 }
 
 .admin-media-actions .admin-button {
