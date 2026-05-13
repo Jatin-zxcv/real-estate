@@ -127,6 +127,7 @@ function PropertiesContent() {
   const [form, setForm] = useState(EMPTY_FORM);
   const [isSaving, setIsSaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [deletingImages, setDeletingImages] = useState([]);
   const [deletingId, setDeletingId] = useState("");
 
   useEffect(() => {
@@ -253,7 +254,44 @@ function PropertiesContent() {
     }
   };
 
-  const removeImage = (imageUrl) => {
+  const deleteCloudinaryImages = async (imageUrls) => {
+    const urls = imageUrls.filter(Boolean);
+    if (urls.length === 0) return;
+
+    const response = await fetch("/api/admin/uploads", {
+      method: "DELETE",
+      credentials: "include",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ urls }),
+    });
+
+    const payload = await response.json().catch(() => null);
+
+    if (!response.ok || !payload?.success) {
+      throw new Error(payload?.error || "Failed to remove image from Cloudinary");
+    }
+  };
+
+  const removeImage = async (imageUrl) => {
+    if (deletingImages.includes(imageUrl)) return;
+
+    setError("");
+    setMessage("");
+    setDeletingImages((current) => [...current, imageUrl]);
+
+    try {
+      await deleteCloudinaryImages([imageUrl]);
+      setMessage("Image removed from Cloudinary.");
+    } catch (deleteError) {
+      setError(deleteError?.message || "Failed to remove image from Cloudinary");
+      setDeletingImages((current) => current.filter((image) => image !== imageUrl));
+      return;
+    } finally {
+      setDeletingImages((current) => current.filter((image) => image !== imageUrl));
+    }
+
     setForm((current) => {
       const images = current.images.filter((image) => image !== imageUrl);
       return {
@@ -264,7 +302,25 @@ function PropertiesContent() {
     });
   };
 
-  const clearImages = () => {
+  const clearImages = async () => {
+    if (form.images.length === 0 || deletingImages.length > 0) return;
+
+    const imagesToRemove = [...form.images];
+    setError("");
+    setMessage("");
+    setDeletingImages(imagesToRemove);
+
+    try {
+      await deleteCloudinaryImages(imagesToRemove);
+      setMessage("Images removed from Cloudinary.");
+    } catch (deleteError) {
+      setError(deleteError?.message || "Failed to remove images from Cloudinary");
+      setDeletingImages([]);
+      return;
+    } finally {
+      setDeletingImages([]);
+    }
+
     setForm((current) => ({
       ...current,
       images: [],
@@ -739,17 +795,26 @@ function PropertiesContent() {
               <>
                 <div className="admin-media-toolbar">
                   <p className="admin-muted">{form.images.length} uploaded</p>
-                  <button className="admin-button danger" onClick={clearImages} type="button">
-                    Remove all
+                  <button
+                    className="admin-button danger"
+                    disabled={deletingImages.length > 0}
+                    onClick={clearImages}
+                    type="button"
+                  >
+                    {deletingImages.length > 0 ? "Removing..." : "Remove all"}
                   </button>
                 </div>
                 <div className="admin-media-grid">
-                  {form.images.map((imageUrl) => (
-                    <div className="admin-media-item" key={imageUrl}>
+                  {form.images.map((imageUrl) => {
+                    const isDeletingImage = deletingImages.includes(imageUrl);
+
+                    return (
+                    <div className={`admin-media-item ${isDeletingImage ? "is-removing" : ""}`} key={imageUrl}>
                       <img alt="" src={imageUrl} />
                       <button
                         aria-label="Remove image"
                         className="admin-media-remove"
+                        disabled={isDeletingImage}
                         onClick={() => removeImage(imageUrl)}
                         type="button"
                       >
@@ -765,14 +830,16 @@ function PropertiesContent() {
                         </button>
                         <button
                           className="admin-button danger"
+                          disabled={isDeletingImage}
                           onClick={() => removeImage(imageUrl)}
                           type="button"
                         >
-                          Remove
+                          {isDeletingImage ? "Removing..." : "Remove"}
                         </button>
                       </div>
                     </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </>
             ) : (

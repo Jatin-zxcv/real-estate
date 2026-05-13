@@ -36,7 +36,7 @@ const optionalUrl = z.preprocess(
 const propertyBaseSchema = z.object({
   title: z.string().trim().min(3).max(160),
   slug: optionalText(180),
-  description: z.string().trim().min(20).max(5000),
+  description: z.string().trim().min(1).max(5000),
   shortDescription: optionalText(240),
   price: z.coerce.number().positive(),
   category: propertyCategorySchema,

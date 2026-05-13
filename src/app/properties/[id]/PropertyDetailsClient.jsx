@@ -8,6 +8,15 @@ import CTAWindow from "@/components/CTAWindow/CTAWindow";
 import Copy from "@/components/Copy/Copy";
 import AnimatedButton from "@/components/AnimatedButton/AnimatedButton";
 
+function getOptimizedPropertyImage(url, width) {
+  if (typeof url !== "string" || !url.includes("/image/upload/")) {
+    return url;
+  }
+
+  const transformation = `f_auto,q_auto,c_fill,g_auto,w_${width},ar_16:9`;
+  return url.replace("/image/upload/", `/image/upload/${transformation}/`);
+}
+
 const PropertyDetailsClient = ({ property, nextProperty }) => {
   const [activeImage, setActiveImage] = useState(0);
   const touchStartXRef = useRef(0);
@@ -132,7 +141,10 @@ const PropertyDetailsClient = ({ property, nextProperty }) => {
                 >
                   {property.images.map((image, index) => (
                     <div className="property-mobile-gallery-slide" key={index}>
-                      <img src={image} alt={`${property.title} - Slide ${index + 1}`} />
+                      <img
+                        src={getOptimizedPropertyImage(image, 900)}
+                        alt={`${property.title} - Slide ${index + 1}`}
+                      />
                     </div>
                   ))}
                 </div>
@@ -154,7 +166,16 @@ const PropertyDetailsClient = ({ property, nextProperty }) => {
           )}
 
           <div className="property-hero-img">
-            <img src={property.images[activeImage]} alt={property.title} />
+            <img
+              src={getOptimizedPropertyImage(property.images[activeImage], 1920)}
+              srcSet={[
+                `${getOptimizedPropertyImage(property.images[activeImage], 1280)} 1280w`,
+                `${getOptimizedPropertyImage(property.images[activeImage], 1920)} 1920w`,
+                `${getOptimizedPropertyImage(property.images[activeImage], 2560)} 2560w`,
+              ].join(", ")}
+              sizes="100vw"
+              alt={property.title}
+            />
           </div>
           <div className="property-hero-overlay"></div>
           <div className="container">
@@ -233,7 +254,10 @@ const PropertyDetailsClient = ({ property, nextProperty }) => {
                     className={`gallery-thumb ${activeImage === index ? "active" : ""}`}
                     onClick={() => setActiveImage(index)}
                   >
-                    <img src={image} alt={`${property.title} - Image ${index + 1}`} />
+                    <img
+                      src={getOptimizedPropertyImage(image, 320)}
+                      alt={`${property.title} - Image ${index + 1}`}
+                    />
                   </div>
                 ))}
               </div>

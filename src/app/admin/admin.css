@@ -339,6 +339,10 @@
   max-width: 18rem;
 }
 
+.admin-media-item.is-removing {
+  opacity: 0.58;
+}
+
 .admin-media-actions {
   display: flex;
   flex-wrap: wrap;

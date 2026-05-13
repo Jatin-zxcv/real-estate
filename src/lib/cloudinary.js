@@ -43,3 +43,48 @@ export function uploadImageBuffer(buffer, options = {}) {
     upload.end(buffer);
   });
 }
+
+export function getPublicIdFromCloudinaryUrl(url) {
+  if (typeof url !== "string" || !url.includes("res.cloudinary.com")) {
+    return null;
+  }
+
+  try {
+    const parsedUrl = new URL(url);
+    const uploadIndex = parsedUrl.pathname.indexOf("/upload/");
+    if (uploadIndex === -1) return null;
+
+    const pathAfterUpload = parsedUrl.pathname.slice(uploadIndex + "/upload/".length);
+    const segments = pathAfterUpload.split("/").filter(Boolean);
+    const versionIndex = segments.findIndex((segment) => /^v\d+$/.test(segment));
+    const publicIdSegments =
+      versionIndex >= 0 ? segments.slice(versionIndex + 1) : segments.slice(1);
+
+    if (publicIdSegments.length === 0) return null;
+
+    const publicIdWithExtension = publicIdSegments.join("/");
+    const publicId = publicIdWithExtension.replace(/\.[^.]+$/, "");
+
+    if (!publicId.startsWith("sharma-real-estates/")) {
+      return null;
+    }
+
+    return decodeURIComponent(publicId);
+  } catch {
+    return null;
+  }
+}
+
+export function destroyImageByUrl(url) {
+  assertCloudinaryConfigured();
+
+  const publicId = getPublicIdFromCloudinaryUrl(url);
+  if (!publicId) {
+    return Promise.resolve({ result: "skipped" });
+  }
+
+  return cloudinary.uploader.destroy(publicId, {
+    resource_type: "image",
+    invalidate: true,
+  });
+}

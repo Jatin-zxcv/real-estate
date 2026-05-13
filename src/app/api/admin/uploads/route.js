@@ -1,6 +1,6 @@
 import { fail, ok } from "@/lib/api-response";
 import { requireAdmin } from "@/lib/server-auth";
-import { uploadImageBuffer } from "@/lib/cloudinary";
+import { destroyImageByUrl, uploadImageBuffer } from "@/lib/cloudinary";
 
 export const runtime = "nodejs";
 
@@ -48,5 +48,25 @@ export async function POST(request) {
     return ok({ uploads }, 201);
   } catch (error) {
     return fail("Failed to upload image", 500, error?.message);
+  }
+}
+
+export async function DELETE(request) {
+  const adminCheck = await requireAdmin(request);
+  if (adminCheck.error) return adminCheck.error;
+
+  try {
+    const body = await request.json();
+    const urls = Array.isArray(body?.urls) ? body.urls : [body?.url].filter(Boolean);
+
+    if (urls.length === 0) {
+      return fail("Select at least one image to remove", 400);
+    }
+
+    const results = await Promise.all(urls.map((url) => destroyImageByUrl(url)));
+
+    return ok({ results });
+  } catch (error) {
+    return fail("Failed to remove image", 500, error?.message);
   }
 }
